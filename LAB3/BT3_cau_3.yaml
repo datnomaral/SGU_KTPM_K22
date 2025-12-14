@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: Coolstore services
+  description: API mô tả hệ thống Coolstore
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: CartService
+    description: API cho giỏ hàng
+  - name: CatalogService
+    description: API cho danh mục sản phẩm
+  - name: InventoryService
+    description: API cho kho hàng
+  - name: RatingService
+    description: API cho đánh giá sản phẩm
+
+paths:
+  # --- CartService ---
+  /cart/api/carts:
+    post:
+      tags: [CartService]
+      summary: Create a new cart
+      responses:
+        '200':
+          description: Cart created
+    put:
+      tags: [CartService]
+      summary: Update cart
+      responses:
+        '200':
+          description: Cart updated
+
+  /cart/api/carts/{cart_id}:
+    get:
+      tags: [CartService]
+      summary: Get cart by ID
+      parameters:
+        - name: cart_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cart detail
+
+  /cart/api/carts/{cart_id}/checkout:
+    put:
+      tags: [CartService]
+      summary: Checkout cart
+      parameters:
+        - name: cart_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cart checked out
+
+  /cart/api/carts/{cart_id}/items/{product_id}:
+    delete:
+      tags: [CartService]
+      summary: Delete product from cart
+      parameters:
+        - name: cart_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product removed from cart
+
+  # --- CatalogService ---
+  /catalog/api/products:
+    post:
+      tags: [CatalogService]
+      summary: Add new product
+      responses:
+        '201':
+          description: Product created
+    get:
+      tags: [CatalogService]
+      summary: Get all products
+      responses:
+        '200':
+          description: List of products
+
+  /catalog/api/products/{current_page}/{high_price}:
+    get:
+      tags: [CatalogService]
+      summary: Get products by page and price
+      parameters:
+        - name: current_page
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: high_price
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Paged product list
+
+  /catalog/api/products/{product_id}:
+    get:
+      tags: [CatalogService]
+      summary: Get product by ID
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product detail
+
+  # --- InventoryService ---
+  /inventory/api/availability:
+    get:
+      tags: [InventoryService]
+      summary: Get inventory availability
+      responses:
+        '200':
+          description: Availability list
+
+  /inventory/api/availability/{id}:
+    get:
+      tags: [InventoryService]
+      summary: Get availability by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Availability detail
+
+  /inventory/api/inventoryById:
+    post:
+      tags: [InventoryService]
+      summary: Get inventory by ID (POST)
+      responses:
+        '200':
+          description: Inventory info
+
+  # --- RatingService ---
+  /rating/api/ratings:
+    get:
+      tags: [RatingService]
+      summary: Get all ratings
+      responses:
+        '200':
+          description: List of ratings
+    post:
+      tags: [RatingService]
+      summary: Add new rating
+      responses:
+        '201':
+          description: Rating created
+
+  /rating/api/ratings/{rating_id}:
+    put:
+      tags: [RatingService]
+      summary: Update rating
+      parameters:
+        - name: rating_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Rating updated
+
+  /rating/api/ratings/{product_id}:
+    get:
+      tags: [RatingService]
+      summary: Get ratings by product ID
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product ratings
